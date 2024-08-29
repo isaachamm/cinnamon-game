@@ -3,9 +3,9 @@ import './App.css'
 
 function App() {
   const [currInput, setCurrInput] = useState('');
-  const [currWordData, setCurrWordData] = useState('');
+  // const [currWordData, setCurrWordData] = useState('');
   const [currWord, setCurrWord] = useState('');
-  const [definitions, setDefinitions] = useState<Array<string>>([]);
+  const [definitions, setDefinitions] = useState<Array<any>>([]);
   const [isCorrectDefinition, setIsCorrectDefinition] = useState<boolean>(false);
   const [isFirstDefinitionGuess, setIsFirstDefinitionGuess] = useState<boolean>(true);
   const [unguessedSynonyms, setUnguessedSynonyms] = useState<Array<string>>([]);
@@ -23,14 +23,14 @@ function App() {
     const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/ambivalent');
     const data = await response.json();
 
-    setCurrWordData(data[0]);
+    // setCurrWordData(data[0]);
     setCurrWord(data[0].word);
     setDefinitions(data[0].meanings[0].definitions);
     setUnguessedSynonyms(data[0].meanings[0].synonyms);
 
   }
 
-  const submitDefinitionGuess = (e) => {
+  const submitDefinitionGuess = (e: any) => {
     
     e.preventDefault();
     if (isFirstDefinitionGuess) {
@@ -42,7 +42,7 @@ function App() {
 
   }
 
-  const submitSynonym = (e) => {
+  const submitSynonym = (e: any) => {
 
     e.preventDefault();
     if(isFirstSynonymGuess) {
@@ -76,7 +76,7 @@ function App() {
 
       
       <form onSubmit={submitDefinitionGuess}>
-        <input type='text' name='definitionGuess' onKeyUp={(e) => setCurrInput(e.target.value)} />
+        <input type='text' name='definitionGuess' onKeyUp={(e) => setCurrInput(e.currentTarget.value)} />
         <button type='submit' name='definitionSubmit'>Submit guess!</button>
       </form>
       <ul>
@@ -91,7 +91,7 @@ function App() {
           <p>success!</p>
           <p>Now, try and guess the synonyms...</p>
           <form onSubmit={submitSynonym}>
-            <input onKeyUp={(e) => setCurrSynonym(e.target.value)}></input>
+            <input onKeyUp={(e) => setCurrSynonym(e.currentTarget.value)}></input>
             <button type='submit'>Submit synonym</button>
           </form>
           <p>{synonymGuessMessage}</p>
