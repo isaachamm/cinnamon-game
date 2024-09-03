@@ -10,7 +10,7 @@ export default function Instructions({
 
 	return (
 		<>
-			<h1>Welcome to the Cinnamon game!</h1>
+			<h1 className='cinnamon-message'>Welcome to the Daily Cinnamon Game!</h1>
 			<h2>Here's how it works...</h2>
 			<p>
 				Below, you'll see definitions for a randomly chosen word. The definitions are for the same word, but they can be different meanings of the word or represent the word for different parts of speech. To beat the game, simply guess the word within 5 tries!

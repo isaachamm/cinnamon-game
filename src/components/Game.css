@@ -1,0 +1,18 @@
+
+
+.cinnamon-message {
+	color: #D2691E;
+}
+
+.guess-list {
+	margin: 0;
+	padding: 0;
+}
+
+.submit-button {
+	margin: 1em 0 0 0;
+}
+
+.text-left {
+	text-align: start;
+}
