@@ -1,4 +1,4 @@
-
+import cinnamonLogo from '/Cinnamon_logo.png';
 
 type InstructionsProps = {
 	setShowInstructions: React.Dispatch<React.SetStateAction<boolean>>
@@ -10,6 +10,8 @@ export default function Instructions({
 
 	return (
 		<>
+			<img src={cinnamonLogo} className="logo" alt="Linkedin logo" />
+
 			<h1 className='cinnamon-message'>Welcome to the Daily Cinnamon Game!</h1>
 			<h2>Here's how it works...</h2>
 			<p>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Game.css';
+import cinnamonLogo from '/Cinnamon_logo.png';
 
 export default function Game() {
 
@@ -68,63 +69,64 @@ export default function Game() {
 
 	return (
 		<>
+			<img src={cinnamonLogo} className="logo" alt="Linkedin logo" />
 			<h1 className='cinnamon-message'>The Daily Cinnamon</h1>
 
-				<ul>
-					<p className='text-left'>- {partOfSpeech}</p>
-					{definitions.map((definition) => (
-						<p className='text-left' key={definition.definition}>{definition.definition}</p>
-					))}
-				</ul>
+			<ul>
+				<p className='text-left'>- {partOfSpeech}</p>
+				{definitions.map((definition) => (
+					<p className='text-left' key={definition.definition}>{definition.definition}</p>
+				))}
+			</ul>
 
 
-				<form onSubmit={submitGuess}>
-					<input onChange={(e) => setCurrGuess(e.currentTarget.value.toLowerCase())} value={currGuess} />
-					<br />
-					<button className='submit-button' type='submit'>Submit Guess</button>
-				</form>
+			<form onSubmit={submitGuess}>
+				<input onChange={(e) => setCurrGuess(e.currentTarget.value.toLowerCase())} value={currGuess} />
+				<br />
+				<button className='submit-button' type='submit'>Submit Guess</button>
+			</form>
 
-				{guessedSynonyms.length === synonyms.length ? <p> You won it all! </p> : null}
+			{guessedSynonyms.length === synonyms.length ? <p> You won it all! </p> : null}
 
-				<p>{guessMessage}</p>
-
-
-				{isCorrectDefinitionWord &&
-					<>
-						<hr />
-						<h2 className='cinnamon-message'>You got it! The daily cinnamon was: {correctDefinitionWord}
-						</h2>
-						<hr />
-					</>
-				}
-				{(guessedSynonyms.length > 0 || isCorrectDefinitionWord) &&
-					<p>You have {synonyms.length - guessedSynonyms.length} synonyms left!</p>
-				}
-				<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+			<p>{guessMessage}</p>
 
 
-					<div className='text-left'>
-						<p>Correct Synonyms:</p>
-						{(guessedSynonyms.length > 0 || isCorrectDefinitionWord) &&
-							guessedSynonyms.map((guessedSynonym) => (
-								<p className='guess-list text-left' key={guessedSynonym}>
-									- {guessedSynonym}
-								</p>
-							))
-						}
-					</div>
+			{isCorrectDefinitionWord &&
+				<>
+					<hr />
+					<h2 className='cinnamon-message'>You got it! The daily cinnamon was: {correctDefinitionWord}
+					</h2>
+					<hr />
+				</>
+			}
+			{(guessedSynonyms.length > 0 || isCorrectDefinitionWord) &&
+				<p>You have {synonyms.length - guessedSynonyms.length} synonyms left!</p>
+			}
+			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 
-					<div className='text-left'>
-						<p>Incorrect guesses:</p>
-						{incorrectGuesses.length > 0 &&
-							incorrectGuesses.map((incorrectGuess) => {
-								return <p className='guess-list' key={incorrectGuess}>- {incorrectGuess}</p>
-							})
-						}
-					</div>
+
+				<div className='text-left'>
+					<p>Correct Synonyms:</p>
+					{(guessedSynonyms.length > 0 || isCorrectDefinitionWord) &&
+						guessedSynonyms.map((guessedSynonym) => (
+							<p className='guess-list text-left' key={guessedSynonym}>
+								- {guessedSynonym}
+							</p>
+						))
+					}
 				</div>
 
+				<div className='text-left'>
+					<p>Incorrect guesses:</p>
+					{incorrectGuesses.length > 0 &&
+						incorrectGuesses.map((incorrectGuess) => {
+							return <p className='guess-list' key={incorrectGuess}>- {incorrectGuess}</p>
+						})
+					}
+				</div>
+			</div>
 
-			</>
-			)
+
+		</>
+	)
 }
