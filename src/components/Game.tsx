@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import './Game.css';
 import cinnamonLogo from '/Cinnamon_logo.png';
 
+const defaultWord = { "word": "ambivalent", "part_of_speech": "adjective", "definitions": [{ "definition": "Simultaneously experiencing or expressing opposing or contradictory feelings, beliefs, or motivations." }, { "definition": "Alternately having one opinion or feeling, and then the opposite." }], "synonyms": ["fluctuating", "vacillating", "wavering", "conflicted", "uncertain", "undecided", "unresolved"] }
+
 export default function Game() {
 
-	// const [currWordData, setCurrWordData] = useState('');
 	const [correctDefinitionWord, setCorrectDefinitionWord] = useState<string>('');
 	const [partOfSpeech, setPartOfSpeech] = useState<string>('');
 	const [definitions, setDefinitions] = useState<Array<any>>([]);
@@ -23,16 +24,38 @@ export default function Game() {
 
 	const fetchWord = async () => {
 
-		const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/ambivalent');
-		const data = await response.json();
-		console.log(data);
+		try {
 
-		// setCurrWordData(data[0]);
-		setCorrectDefinitionWord(data[0].word);
-		setDefinitions(data[0].meanings[0].definitions);
-		setPartOfSpeech(data[0].meanings[0].partOfSpeech);
-		setSynonyms(data[0].meanings[0].synonyms);
-
+			const response = await fetch('/dictionary.json');
+			const data = await response.json();
+			const currDate = new Date();
+			const currYear = currDate.getFullYear();
+			const currMonth = currDate.getMonth() + 1;
+			const currDay = currDate.getDate();
+			for (let i = 0; i < data.length; i++) {
+				const dateSplit = data[i].date.split('-')
+				const year = parseInt(dateSplit[0]);
+				const month = parseInt(dateSplit[1]);
+				const day = parseInt(dateSplit[2]);
+				if (year === currYear &&
+					month === currMonth &&
+					day === currDay
+				) {
+					setCorrectDefinitionWord(data[i].word);
+					setDefinitions(data[i].definitions);
+					setPartOfSpeech(data[i].part_of_speech);
+					setSynonyms(data[i].synonyms);
+					return;
+				}
+			}
+		} catch (exception) {
+			console.error("An error occurred: ", exception);
+		} finally {
+			setCorrectDefinitionWord(defaultWord.word);
+			setDefinitions(defaultWord.definitions);
+			setPartOfSpeech(defaultWord.part_of_speech);
+			setSynonyms(defaultWord.synonyms);
+		}
 	}
 
 	const submitGuess = (e: any) => {
@@ -99,6 +122,11 @@ export default function Game() {
 					<hr />
 				</>
 			}
+
+			{synonyms.length === 0 &&
+				<p>There are no synonyms to guess today :(</p>
+			}
+
 			{(guessedSynonyms.length > 0 || isCorrectDefinitionWord) &&
 				<p>You have {synonyms.length - guessedSynonyms.length} synonyms left!</p>
 			}
