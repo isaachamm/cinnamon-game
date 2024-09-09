@@ -41,10 +41,22 @@ export default function Game() {
 					month === currMonth &&
 					day === currDay
 				) {
-					setCorrectDefinitionWord(data[i].word);
+					
+					// Fix capitalization
+					const wordRaw: string = data[i].word;
+					const word = wordRaw.charAt(0).toUpperCase() + wordRaw.slice(1);
+					const partOfSpeechRaw: string = data[i].part_of_speech;
+					const partOfSpeech = partOfSpeechRaw.charAt(0).toUpperCase() + partOfSpeechRaw.slice(1);
+					const synonymsRaw: string[] = data[i].synonyms;
+					const synonyms: string[] = [];
+					for (let i = 0; i < synonymsRaw.length; i++) {
+						synonyms.push(synonymsRaw[i].charAt(0).toUpperCase() + synonymsRaw[i].slice(1));
+					}
+
+					setCorrectDefinitionWord(word);
 					setDefinitions(data[i].definitions);
-					setPartOfSpeech(data[i].part_of_speech);
-					setSynonyms(data[i].synonyms);
+					setPartOfSpeech(partOfSpeech);
+					setSynonyms(synonyms);
 					return;
 				}
 			}
@@ -98,12 +110,10 @@ export default function Game() {
 			<img src={cinnamonLogo} className="logo" alt="Linkedin logo" />
 			<h1 className='cinnamon-message'>The Daily Cinnamon</h1>
 
-			<ul>
-				<p className='text-left'>- {partOfSpeech}</p>
+				<h2><em>{partOfSpeech}</em></h2>
 				{definitions.map((definition) => (
 					<p className='text-left' key={definition.definition}>{definition.definition}</p>
 				))}
-			</ul>
 
 
 			<form onSubmit={submitGuess}>
