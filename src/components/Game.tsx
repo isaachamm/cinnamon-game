@@ -10,6 +10,7 @@ export default function Game() {
 	const [partOfSpeech, setPartOfSpeech] = useState<string>('');
 	const [definitions, setDefinitions] = useState<Array<any>>([]);
 	const [isCorrectDefinitionWord, setIsCorrectDefinitionWord] = useState<boolean>(false);
+	const [gaveUp, setGaveUp] = useState<boolean>(false);
 
 	const [currGuess, setCurrGuess] = useState<string>('');
 	const [incorrectGuesses, setIncorrectGuesses] = useState<Array<string>>([]);
@@ -41,22 +42,18 @@ export default function Game() {
 					month === currMonth &&
 					day === currDay
 				) {
-					
+
 					// Fix capitalization
 					const wordRaw: string = data[i].word;
 					const word = wordRaw.charAt(0).toUpperCase() + wordRaw.slice(1);
 					const partOfSpeechRaw: string = data[i].part_of_speech;
 					const partOfSpeech = partOfSpeechRaw.charAt(0).toUpperCase() + partOfSpeechRaw.slice(1);
-					const synonymsRaw: string[] = data[i].synonyms;
-					const synonyms: string[] = [];
-					for (let i = 0; i < synonymsRaw.length; i++) {
-						synonyms.push(synonymsRaw[i].charAt(0).toUpperCase() + synonymsRaw[i].slice(1));
-					}
+
 
 					setCorrectDefinitionWord(word);
 					setDefinitions(data[i].definitions);
 					setPartOfSpeech(partOfSpeech);
-					setSynonyms(synonyms);
+					setSynonyms(data[i].synonyms);
 					return;
 				}
 			}
@@ -105,21 +102,35 @@ export default function Game() {
 		setCurrGuess("");
 	}
 
+	const revealWord = () => {
+		setGaveUp(true);
+		setGuessMessage("No worries! Good luck with the synonyms!")
+	}
+
+	const revealSynonym = () => {
+		for (let i = 0; i < synonyms.length; i++) {
+			if (!guessedSynonyms.includes(synonyms[i])) {
+				setGuessedSynonyms([...guessedSynonyms, synonyms[i]])
+			}
+		}
+	}
+
 	return (
 		<>
 			<img src={cinnamonLogo} className="logo" alt="Linkedin logo" />
 			<h1 className='cinnamon-message'>The Daily Cinnamon</h1>
 
-				<h2><em>{partOfSpeech}</em></h2>
-				{definitions.map((definition) => (
-					<p className='text-left' key={definition.definition}>{definition.definition}</p>
-				))}
+			<h2><em>{partOfSpeech}</em></h2>
+			{definitions.map((definition) => (
+				<p className='text-left' key={definition.definition}>{definition.definition}</p>
+			))}
 
 
 			<form onSubmit={submitGuess}>
 				<input onChange={(e) => setCurrGuess(e.currentTarget.value.toLowerCase())} value={currGuess} />
 				<br />
-				<button className='submit-button' type='submit'>Submit Guess</button>
+				<button type='submit'>Submit Guess</button>
+				<button type='button' onClick={() => revealWord()}>Reveal the Daily</button>
 			</form>
 
 			{(guessedSynonyms.length === synonyms.length && synonyms.length > 0)
@@ -128,10 +139,10 @@ export default function Game() {
 			<p>{guessMessage}</p>
 
 
-			{isCorrectDefinitionWord &&
+			{isCorrectDefinitionWord || gaveUp &&
 				<>
 					<hr />
-					<h2 className='cinnamon-message'>You got it! The daily cinnamon was: {correctDefinitionWord}
+					<h2 className='cinnamon-message'>{gaveUp ? "" : "You got it!"} The Daily Cinnamon was: {correctDefinitionWord}
 					</h2>
 					<hr />
 				</>
@@ -141,9 +152,10 @@ export default function Game() {
 				<p>There are no synonyms to guess today :(</p>
 			}
 
-			{(guessedSynonyms.length > 0 || isCorrectDefinitionWord) &&
-				<p>You have {synonyms.length - guessedSynonyms.length} synonyms left!</p>
-			}
+			<p>There {synonyms.length - guessedSynonyms.length > 1 ? "are" : "is"} {synonyms.length - guessedSynonyms.length} synonym{synonyms.length - guessedSynonyms.length > 1 ? "s" : ""} left</p>
+
+			<button type='button' onClick={() => revealSynonym()}>Reveal one synonym</button>
+
 			<div style={{ display: 'flex', justifyContent: 'space-around' }}>
 
 
