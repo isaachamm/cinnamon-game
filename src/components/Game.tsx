@@ -139,7 +139,7 @@ export default function Game() {
 			<p>{guessMessage}</p>
 
 
-			{isCorrectDefinitionWord || gaveUp &&
+			{(isCorrectDefinitionWord || gaveUp) &&
 				<>
 					<hr />
 					<h2 className='cinnamon-message'>{gaveUp ? "" : "You got it!"} The Daily Cinnamon was: {correctDefinitionWord}
