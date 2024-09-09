@@ -25,8 +25,8 @@ export default function Game() {
 	const fetchWord = async () => {
 
 		try {
-
-			const response = await fetch('/dictionary.json');
+			const dictionaryUrl = new URL('../assets/dictionary.json', import.meta.url).href;
+			const response = await fetch(dictionaryUrl);
 			const data = await response.json();
 			const currDate = new Date();
 			const currYear = currDate.getFullYear();
@@ -48,9 +48,12 @@ export default function Game() {
 					return;
 				}
 			}
+			setCorrectDefinitionWord(defaultWord.word);
+			setDefinitions(defaultWord.definitions);
+			setPartOfSpeech(defaultWord.part_of_speech);
+			setSynonyms(defaultWord.synonyms);
 		} catch (exception) {
 			console.error("An error occurred: ", exception);
-		} finally {
 			setCorrectDefinitionWord(defaultWord.word);
 			setDefinitions(defaultWord.definitions);
 			setPartOfSpeech(defaultWord.part_of_speech);
@@ -109,7 +112,8 @@ export default function Game() {
 				<button className='submit-button' type='submit'>Submit Guess</button>
 			</form>
 
-			{guessedSynonyms.length === synonyms.length ? <p> You won it all! </p> : null}
+			{(guessedSynonyms.length === synonyms.length && synonyms.length > 0)
+				? <p> You won it all! </p> : null}
 
 			<p>{guessMessage}</p>
 
