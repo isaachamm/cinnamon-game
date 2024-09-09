@@ -26,6 +26,9 @@ export default function Instructions({
 				<p>
 					Are you ready?
 				</p>
+				<p>
+					Note: The quality of the dictionary API that I'm currently using appears to be subpar (e.g., poor definitions, not enough synonyms), so I'm currently looking for a better dictionary API.
+				</p>
 			</div>
 
 			<button onClick={() => setShowInstructions(false)}>Click here to begin!</button>
