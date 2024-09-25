@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  width: 100%;
+}
+
 a {
   font-weight: 500;
   color: #D2691E;
@@ -54,4 +58,8 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+hr {
+  margin: 0;
 }

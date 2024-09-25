@@ -1,0 +1,30 @@
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 400px;
+	margin: auto;
+}
+
+.information {
+	cursor: pointer;
+}
+
+.information-container {
+	display: block;
+}
+
+.information:hover + .hover-information {
+	display: block;
+}
+
+.hover-information {
+	display: none;
+	position: absolute;
+	padding: 1rem 2rem;
+	background: white;
+	color: black;
+	border-radius: 1em;
+	max-width: 300px;
+}

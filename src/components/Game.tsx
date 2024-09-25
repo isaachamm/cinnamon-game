@@ -122,7 +122,7 @@ export default function Game() {
 
 			<h2><em>{partOfSpeech}</em></h2>
 			{definitions.map((definition) => (
-				<p className='text-left' key={definition.definition}>{definition.definition}</p>
+				<p className='text-left definitions' key={definition.definition}>{definition.definition}</p>
 			))}
 
 

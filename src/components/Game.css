@@ -3,9 +3,13 @@
 button {
 	margin: 1em 0.5em 0 0.5em;
 }
-
+	
 .cinnamon-message {
 	color: #D2691E;
+}
+
+.definitions {
+	margin: 0.1em;
 }
 
 .guess-list {
