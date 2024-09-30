@@ -172,7 +172,7 @@ export default function Game() {
 
 			<div className='date-container'>
 				<button onClick={prevDate}><strong>&lt; Prev</strong></button>
-				<input type='date' onChange={onDateChange} value={`${currDate.getFullYear()}-${(currDate.getMonth() + 1) >= 10 ? (currDate.getMonth() + 1) : "0" + (currDate.getMonth() + 1)}-${(currDate.getDate()) >= 10 ? currDate.getDate() : "0" + currDate.getDate()}`} />
+				<input type='date' onChange={onDateChange} value={`${currDate.getUTCFullYear()}-${(currDate.getUTCMonth() + 1) >= 10 ? (currDate.getUTCMonth() + 1) : "0" + (currDate.getUTCMonth() + 1)}-${(currDate.getUTCDate()) >= 10 ? currDate.getUTCDate() : "0" + currDate.getUTCDate()}`} />
 				<button onClick={nextDate}><strong>Next &gt;</strong></button>
 			</div>
 			{!validDate && <p className='error-message'>Date must be after 09/09/24 and before current date ({new Date().toLocaleDateString()})</p>}
