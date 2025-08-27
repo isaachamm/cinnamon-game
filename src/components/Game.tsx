@@ -6,6 +6,8 @@ const defaultWord = { "word": "ambivalent", "part_of_speech": "adjective", "defi
 
 export default function Game() {
 
+	const FIRST_ALLOWABLE_DATE = new Date(2024, 8, 9);
+
 	const [correctDefinitionWord, setCorrectDefinitionWord] = useState<string>('');
 	const [partOfSpeech, setPartOfSpeech] = useState<string>('');
 	const [definitions, setDefinitions] = useState<Array<any>>([]);
@@ -23,8 +25,19 @@ export default function Game() {
 
 
 	useEffect(() => {
+		resetBoard();
 		fetchWord();
 	}, [currDate]);
+
+	const resetBoard = () => {
+		// Restore defaults to match all state definitions above
+		setCurrGuess('');
+		setGaveUp(false);
+		setGuessMessage('');
+		setGuessedSynonyms([]);
+		setIncorrectGuesses([]);
+		setIsCorrectDefinitionWord(false);
+	}
 
 	const fetchWord = async () => {
 
@@ -35,10 +48,9 @@ export default function Game() {
 			const currYear = currDate.getFullYear();
 			const currMonth = currDate.getMonth() + 1;
 			const currDay = currDate.getDate();
-			const earliestDate = new Date(2024, 8, 9);
 			const latestDate = new Date();
 			if (
-				currDate > earliestDate &&
+				currDate > FIRST_ALLOWABLE_DATE &&
 				currDate < latestDate
 			) {
 
@@ -97,7 +109,7 @@ export default function Game() {
 
 	const prevDate = () => {
 		var newDate = new Date(currDate.setDate(currDate.getDate() - 1));
-		if (newDate < new Date(2024, 8, 9)) {
+		if (newDate < FIRST_ALLOWABLE_DATE) {
 			newDate = new Date(currDate.setDate(currDate.getDate() + 1));
 			setValidDate(false);
 			return;
@@ -105,18 +117,22 @@ export default function Game() {
 		setCurrDate(newDate);
 	}
 
+	const randomDate = () => {
+		var newDate: Date = new Date(FIRST_ALLOWABLE_DATE.getTime() + Math.random() * ((new Date()).getTime() - FIRST_ALLOWABLE_DATE.getTime()));
+		setCurrDate(newDate);
+	}
+
 	const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newDate = new Date(event.currentTarget.value);
 
-		if (newDate < new Date(2024, 8, 9)) {
+		if (newDate < FIRST_ALLOWABLE_DATE ||
+			newDate > new Date()
+			) {
 			setValidDate(false);
 			return;
 		}
 
-		if (newDate > new Date()) {
-			setValidDate(false);
-			return;
-		}
+		setGaveUp(false);
 		setCurrDate(newDate);
 	}
 
@@ -175,6 +191,7 @@ export default function Game() {
 				<input type='date' onChange={onDateChange} value={`${currDate.getUTCFullYear()}-${(currDate.getUTCMonth() + 1) >= 10 ? (currDate.getUTCMonth() + 1) : "0" + (currDate.getUTCMonth() + 1)}-${(currDate.getUTCDate()) >= 10 ? currDate.getUTCDate() : "0" + currDate.getUTCDate()}`} />
 				<button onClick={nextDate}><strong>Next &gt;</strong></button>
 			</div>
+			<button onClick={randomDate}><strong>Random Date</strong></button>
 			{!validDate && <p className='error-message'>Date must be after 09/09/24 and before current date ({new Date().toLocaleDateString()})</p>}
 
 			<h2><em>{partOfSpeech}</em></h2>
